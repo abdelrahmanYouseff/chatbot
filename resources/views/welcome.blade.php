@@ -19,7 +19,16 @@
   <h1 class="fw-bold text-black">Luxuria Cars Rental</h1>
 </div>
 
-<script src="http://localhost:8000/widget.js?bot_id=123"></script>
+<script>
+    if (!window.luxuriaWidgetLoaded) {
+      window.luxuriaWidgetLoaded = true;
+      window.addEventListener('DOMContentLoaded', function () {
+        const script = document.createElement('script');
+        script.src = "http://localhost:8000/widget.js?bot_id=123";
+        document.body.appendChild(script);
+      });
+    }
+  </script>
 
 </body>
 </html>
