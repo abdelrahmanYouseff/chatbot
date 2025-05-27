@@ -20,7 +20,6 @@ Route::get('/', function () {
 
 
 Route::post('/upload-pdf', [DocumentController::class, 'upload']);
-Route::post('/chat/{document}', [ChatController::class, 'ask']);
 Route::get('/chatbot', function () {
     return view('chatbot');
 });
