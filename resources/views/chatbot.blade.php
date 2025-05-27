@@ -162,7 +162,7 @@ form.upload-form {
 
     <form id="chat-form" class="input-area">
         <input type="text" id="question" placeholder="Type your question..." required>
-        <input type="hidden" id="document_id" value="43">
+        <input type="hidden" id="document_id" value="44">
         <button type="submit">Send</button>
     </form>
 
