@@ -28,26 +28,25 @@ class WebhookController extends Controller
         $text = $message['text']['body'] ?? null;
 
         if ($from && $text) {
-            $reply = $this->chatbotReply($text);
+            try {
+                // استخدم أول وثيقة موجودة (أو عدل حسب الحاجة)
+                $document = \App\Models\Document::first();
+                $chatService = app(\App\Services\ChatService::class);
+                $answer = $chatService->ask($text, $document->id ?? null);
 
-            Http::withToken(env('WA_TOKEN'))->post("https://graph.facebook.com/v18.0/" . env('WA_PHONE_ID') . "/messages", [
-                'messaging_product' => 'whatsapp',
-                'to' => $from,
-                'type' => 'text',
-                'text' => ['body' => $reply]
-            ]);
+                $whatsappResponse = Http::withToken(env('WA_TOKEN'))->post("https://graph.facebook.com/v18.0/" . env('WA_PHONE_ID') . "/messages", [
+                    'messaging_product' => 'whatsapp',
+                    'to' => $from,
+                    'type' => 'text',
+                    'text' => ['body' => $answer],
+                ]);
+
+                \Log::info('📩 WhatsApp API response', ['response' => $whatsappResponse->json()]);
+            } catch (\Throwable $e) {
+                \Log::error('❌ Error in WhatsApp reply logic', ['error' => $e->getMessage()]);
+            }
         }
 
         return response()->json(['status' => 'ok']);
-    }
-    /**
-     * Generate a chatbot reply for the given message.
-     *
-     * @param string $message
-     * @return string
-     */
-    private function chatbotReply($message)
-    {
-        return "شكرًا لرسالتك! استلمنا: \"$message\" 😊";
     }
 }
