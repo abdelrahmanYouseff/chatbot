@@ -3,7 +3,7 @@
     const botId = urlParams.get('bot_id') || 'default';
 
     const iframe = document.createElement('iframe');
-    iframe.src = `http://127.0.0.1:8000/widget?bot_id=${botId}`;
+    iframe.src = `https://chatbot.rentluxuria.com/widget?bot_id=${botId}`;
     iframe.style.position = 'fixed';
     iframe.style.bottom = '20px';
     iframe.style.right = '20px';
