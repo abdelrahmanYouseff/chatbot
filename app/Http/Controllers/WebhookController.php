@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class WebhookController extends Controller
 {
     public function handle(Request $request)
     {
+        Log::info('✅ WhatsApp Webhook Triggered', $request->all());
         if ($request->isMethod('get') && $request->has('hub_mode')) {
             if (
                 $request->get('hub_mode') === 'subscribe' &&
