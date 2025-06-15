@@ -40,4 +40,14 @@ class WebhookController extends Controller
 
         return response()->json(['status' => 'ok']);
     }
+    /**
+     * Generate a chatbot reply for the given message.
+     *
+     * @param string $message
+     * @return string
+     */
+    private function chatbotReply($message)
+    {
+        return "شكرًا لرسالتك! استلمنا: \"$message\" 😊";
+    }
 }
