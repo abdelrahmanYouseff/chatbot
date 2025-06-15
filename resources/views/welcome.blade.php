@@ -19,7 +19,7 @@
   <h1 class="fw-bold text-black">Luxuria Cars Rental</h1>
 </div>
 
-<script src="http://localhost:8000/widget.js?bot_id=123"></script>
+<script src="https://chatbot.rentluxuria.com//widget.js?bot_id=123"></script>
 
 </body>
 </html>
