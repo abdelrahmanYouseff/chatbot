@@ -54,7 +54,8 @@ class ChatService
 
         logger()->info('GPT response', ['response' => $response]);
 
-        return $response['choices'][0]['message']['content'] ?? 'No response from the AI model.';
+        $answer = $response['choices'][0]['message']['content'] ?? 'No response from the AI model.';
+        return preg_replace('/^[0-9]+\.\s+|^•\s+/', '', trim($answer));
     }
 
     protected function cosineSimilarity(array $a, array $b): float
