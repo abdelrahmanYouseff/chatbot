@@ -9,31 +9,34 @@ class WebhookController extends Controller
 {
     public function handle(Request $request)
     {
+        // ✅ Step 1: تحقق من طلب التحقق من Meta
+        if ($request->isMethod('get') && $request->has('hub_mode')) {
+            if (
+                $request->get('hub_mode') === 'subscribe' &&
+                $request->get('hub_verify_token') === env('WA_VERIFY_TOKEN')
+            ) {
+                return response($request->get('hub_challenge'), 200);
+            } else {
+                return response('Verification failed', 403);
+            }
+        }
+
+        // ✅ Step 2: استقبال الرسائل (POST)
         $message = $request->input('entry.0.changes.0.value.messages.0');
         $from = $message['from'] ?? null;
         $text = $message['text']['body'] ?? null;
 
         if ($from && $text) {
-            // 👇 هنا بترسل الرسالة لـ GPT أو أي منطق شات بوت عندك
             $reply = $this->chatbotReply($text);
 
-            // 👇 ترجع الرد لواتساب
             Http::withToken(env('WA_TOKEN'))->post("https://graph.facebook.com/v18.0/" . env('WA_PHONE_ID') . "/messages", [
                 'messaging_product' => 'whatsapp',
                 'to' => $from,
                 'type' => 'text',
-                'text' => [
-                    'body' => $reply
-                ]
+                'text' => ['body' => $reply]
             ]);
         }
 
         return response()->json(['status' => 'ok']);
-    }
-
-    // 👇 ده كود الرد البسيط، ممكن تعدله بـ ChatGPT
-    public function chatbotReply($message)
-    {
-        return "🤖 شكرًا لرسالتك: \"$message\". هنرد عليك حالًا.";
     }
 }
