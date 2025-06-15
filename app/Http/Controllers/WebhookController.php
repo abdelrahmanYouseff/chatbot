@@ -52,11 +52,10 @@ class WebhookController extends Controller
                         'password' => bcrypt(\Illuminate\Support\Str::random(10)),
                         'last_interaction_at' => now(),
                         'inactivity_attempts' => 0,
-                        'phone_number' => $from,
                     ]
                 );
 
-                // تحديث وقت التفاعل عند كل رسالة
+                $user->phone_number = $from;
                 $user->last_interaction_at = now();
                 $user->inactivity_attempts = 0;
                 $user->save();
