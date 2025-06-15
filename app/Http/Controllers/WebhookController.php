@@ -9,7 +9,6 @@ class WebhookController extends Controller
 {
     public function handle(Request $request)
     {
-        // ✅ Step 1: تحقق من طلب التحقق من Meta
         if ($request->isMethod('get') && $request->has('hub_mode')) {
             if (
                 $request->get('hub_mode') === 'subscribe' &&
