@@ -10,7 +10,7 @@ class WebhookController extends Controller
 {
     public function handle(Request $request)
     {
-        Log::info('✅ WhatsApp Webhook Triggered', $request->all());
+        \Log::info('✅ WhatsApp Webhook Triggered', $request->all());
         if ($request->isMethod('get') && $request->has('hub_mode')) {
             if (
                 $request->get('hub_mode') === 'subscribe' &&
