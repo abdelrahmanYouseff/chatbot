@@ -43,11 +43,11 @@ class ChatService
             'messages' => [
                 [
                     'role' => 'system',
-                    'content' => 'You are an AI assistant who answers questions based strictly on provided content. Do not guess or fabricate. If the answer is not found, respond clearly that it is not present.'
+                    'content' => "You are a professional customer support agent at Luxuria Car Rental in Dubai. Use the internal company knowledge provided to answer naturally and professionally. Never mention documents or sources. Every response must be in two parts:\n\n1. Answer the customer's question naturally and helpfully.\n2. Then provide a SEPARATE short follow-up question related to the conversation, starting with something like: 'Would you like...', 'Can I help you with...', or 'Do you want me to...'."
                 ],
                 [
                     'role' => 'user',
-                    'content' => "The following content was extracted from a document:\n\n{$topChunks}\n\nNow answer the question: \"{$question}\""
+                    'content' => "Customer asked: \"{$question}\". Use the following internal knowledge to help answer them:\n\n{$topChunks}"
                 ]
             ],
         ]);
