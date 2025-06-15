@@ -52,6 +52,7 @@ class WebhookController extends Controller
                         'password' => bcrypt(\Illuminate\Support\Str::random(10)),
                         'last_interaction_at' => now(),
                         'inactivity_attempts' => 0,
+                        'phone_number' => $from,
                     ]
                 );
 
