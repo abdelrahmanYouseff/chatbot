@@ -43,12 +43,22 @@ class WebhookController extends Controller
 
                 \Log::info('📩 WhatsApp API response', ['response' => $whatsappResponse->json()]);
 
-                // حفظ آخر وقت تفاعل
-                $user = \App\Models\User::where('phone_number', $from)->first();
-                if ($user) {
-                    $user->last_interaction_at = now();
-                    $user->save();
-                }
+                // حفظ آخر وقت تفاعل أو إنشاء المستخدم إذا لم يكن موجودًا
+                $user = \App\Models\User::firstOrCreate(
+                    ['phone_number' => $from],
+                    [
+                        'name' => 'WhatsApp User',
+                        'email' => 'user_' . $from . '@whatsapp.local',
+                        'password' => bcrypt(\Illuminate\Support\Str::random(10)),
+                        'last_interaction_at' => now(),
+                        'inactivity_attempts' => 0,
+                    ]
+                );
+
+                // تحديث وقت التفاعل عند كل رسالة
+                $user->last_interaction_at = now();
+                $user->inactivity_attempts = 0;
+                $user->save();
 
             } catch (\Throwable $e) {
                 \Log::error('❌ Error in WhatsApp reply logic', ['error' => $e->getMessage()]);
