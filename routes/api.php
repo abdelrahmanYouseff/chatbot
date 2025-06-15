@@ -20,5 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::get('/webhook/whatsapp', [WebhookController::class, 'verify']);
-Route::post('/webhook/whatsapp', [WebhookController::class, 'receive']);
+
+Route::post('/webhook/whatsapp', [WebhookController::class, 'handle']);
